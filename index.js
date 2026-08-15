@@ -9,6 +9,9 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.get(["/", "/health"], (_req, res) => {
+  res.status(200).json({ status: "ok", service: "notes-api" });
+});
 
 let url = process.env.MONGODB_URI;
 mongoose.connect(url).then(() => console.log("DB connection went successful!"));

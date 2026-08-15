@@ -67,9 +67,11 @@ jobs:
         echo "api_endpoint=$API_ENDPOINT" >> $GITHUB_OUTPUT
         echo "✓ Deployment successful!"
         echo "API Endpoint: $API_ENDPOINT"
+        echo "Health check: $API_ENDPOINT/health"
 
     - name: Publish deployment summary
       run: |
         echo "### Deployment successful" >> "$GITHUB_STEP_SUMMARY"
         echo "API endpoint: ${{ steps.deployment.outputs.api_endpoint }}" >> "$GITHUB_STEP_SUMMARY"
+        echo "Health check: ${{ steps.deployment.outputs.api_endpoint }}/health" >> "$GITHUB_STEP_SUMMARY"
 
