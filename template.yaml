@@ -72,8 +72,6 @@ Resources:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: prod
-      Auth:
-        DefaultAuthorizer: None
 
 Outputs:
   NotesApiEndpoint:
