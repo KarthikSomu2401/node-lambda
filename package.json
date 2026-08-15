@@ -1,7 +1,7 @@
 {
   "name": "lambda",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Node.js REST API for managing notes with MongoDB. Designed to integrate with AWS Lambda for serverless deployment.",
   "main": "index.js",
   "type": "module",
   "devDependencies": {

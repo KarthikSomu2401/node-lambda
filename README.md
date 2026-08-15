@@ -1,6 +1,6 @@
 # Lambda - Notes API
 
-A simple Express.js REST API for managing notes using MongoDB and Mongoose.
+A Node.js REST API for managing notes with MongoDB and Mongoose. This project is designed to be deployed as a serverless application on AWS Lambda in the near future, providing a scalable backend for note management.
 
 ## Prerequisites
 
@@ -62,12 +62,23 @@ The API provides CRUD operations for notes via the `/note` route:
 - `PUT /note/:id` - Update a note
 - `DELETE /note/:id` - Delete a note
 
+## Roadmap
+
+This project is planned to be integrated with **AWS Lambda** for serverless deployment, enabling:
+- Automatic scaling based on demand
+- Pay-per-use pricing model
+- Reduced infrastructure management overhead
+- Faster deployment cycles
+
+The current Express.js setup will be adapted to work with AWS Lambda using appropriate adapters and handlers.
+
 ## Technologies
 
 - **Express.js** - Web framework
 - **Mongoose** - MongoDB object modeling
 - **em-crud** - CRUD operations wrapper
 - **esbuild** - JavaScript bundler
+- **AWS Lambda** (upcoming) - Serverless compute platform
 
 ## Environment Variables
 
