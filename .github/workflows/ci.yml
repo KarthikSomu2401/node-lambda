@@ -38,7 +38,7 @@ jobs:
     - name: Validate SAM template
       run: |
         pip install aws-sam-cli
-        sam validate --template template.yaml
+        sam validate --template-file template.yaml
 
     - name: Check environment files
       run: |
