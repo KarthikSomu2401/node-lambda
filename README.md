@@ -189,7 +189,7 @@ This project includes automated CI/CD pipelines for testing and deployment.
 2. **Set GitHub Secrets:**
    ```
    AWS_REGION = us-east-1
-   AWS_ROLE_TO_ASSUME = arn:aws:iam::YOUR_ACCOUNT:role/github-actions-lambda-deploy-role
+   AWS_ROLE_TO_ASSUME = arn:aws:iam::YOUR_ACCOUNT:role/github-actions-lambda-deploy
    MONGODB_URI = mongodb+srv://user:pass@cluster.mongodb.net/note_db
    ```
 

@@ -7,11 +7,7 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 512
-    Runtime: nodejs20.x
-    Environment:
-      Variables:
-        MONGODB_URI: !Ref MongoDBUri
-        AUTO_TAG_LAMBDA_FUNCTION: !Ref AutoTagFunction
+    Runtime: nodejs22.x
 
 Parameters:
   MongoDBUri:
@@ -28,7 +24,7 @@ Resources:
       FunctionName: notes-api
       CodeUri: .
       Handler: lambda-handler.handler
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Timeout: 30
       MemorySize: 512
       Architectures:
@@ -61,19 +57,11 @@ Resources:
       FunctionName: auto-tag-notes
       CodeUri: app/lambda
       Handler: auto-tag-function.handler
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Timeout: 15
       MemorySize: 256
       Architectures:
         - x86_64
-
-  # HTTP API Gateway
-  ApiGateway:
-    Type: AWS::Serverless::HttpApi
-    Properties:
-      StageName: prod
-      Auth:
-        DefaultAuthorizer: None
 
 Outputs:
   NotesApiEndpoint:

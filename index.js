@@ -8,6 +8,7 @@ import router from "./app/router/router.js";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
 let url = process.env.MONGODB_URI;
 mongoose.connect(url).then(() => console.log("DB connection went successful!"));

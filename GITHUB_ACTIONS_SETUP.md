@@ -43,9 +43,14 @@ GitHub Actions can authenticate to AWS without storing credentials. Follow these
    - **Provider URL**: `https://token.actions.githubusercontent.com`
    - **Audience**: `sts.amazonaws.com`
 5. Click "Get thumbprint" (if not auto-populated)
-6. Create role with name: `github-actions-lambda-deploy-role`
+6. Create role with name: `github-actions-lambda-deploy`
 
 ### Attach Policies
+
+For initial learning only, attach the minimum service permissions needed by
+CloudFormation to create the SAM resources. Avoid using `AdministratorAccess`
+in a shared or production account. The policy below is intentionally broad for
+this sample and should be replaced with a resource-scoped deployment policy.
 
 Attach these permissions to the role:
 
@@ -88,7 +93,7 @@ Edit trust relationships to add:
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:YOUR_GITHUB_USERNAME/node-lambda:*"
+          "token.actions.githubusercontent.com:sub": "repo:KarthikSomu2401@14906593/node-lambda@1335078817:ref:refs/heads/main"
         }
       }
     }
@@ -98,7 +103,9 @@ Edit trust relationships to add:
 
 Replace:
 - `YOUR_AWS_ACCOUNT_ID` - Your AWS account ID
-- `YOUR_GITHUB_USERNAME` - Your GitHub username
+- The `sub` value above is specific to `KarthikSomu2401/node-lambda` and its
+  `main` branch. Get the exact value from the OIDC token if the repository is
+  renamed or transferred.
 
 ## Step 2: Set Up GitHub Secrets
 
@@ -112,7 +119,7 @@ Add these secrets to your GitHub repository:
 | Secret Name | Description | Example |
 |-------------|-------------|---------|
 | `AWS_REGION` | AWS region for deployment | `us-east-1` |
-| `AWS_ROLE_TO_ASSUME` | ARN of the OIDC role created above | `arn:aws:iam::123456789012:role/github-actions-lambda-deploy-role` |
+| `AWS_ROLE_TO_ASSUME` | ARN of the OIDC role created above | `arn:aws:iam::123456789012:role/github-actions-lambda-deploy` |
 | `MONGODB_URI` | MongoDB Atlas connection string | `mongodb+srv://user:pass@cluster.mongodb.net/note_db` |
 
 ### Setting Secrets
