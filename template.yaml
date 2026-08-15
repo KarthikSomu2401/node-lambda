@@ -40,10 +40,13 @@ Resources:
               Action:
                 - lambda:InvokeFunction
               Resource: !GetAtt AutoTagFunction.Arn
+      Layers:
+        - !Sub "arn:aws:lambda:${AWS::Region}:753240598075:layer:LambdaAdapterLayerX86:23"
       Environment:
         Variables:
           MONGODB_URI: !Ref MongoDBUri
           AUTO_TAG_LAMBDA_FUNCTION: !Ref AutoTagFunction
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
       Events:
         ApiEvent:
           Type: HttpApi

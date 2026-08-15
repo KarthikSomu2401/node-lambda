@@ -13,8 +13,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.162",
-    "esbuild": "^0.28.2",
-    "aws-sam-cli": "^1.120.0"
+    "esbuild": "^0.28.2"
   },
   "dependencies": {
     "em-crud": "^1.0.9",

@@ -10,7 +10,7 @@ const router = express.Router();
 const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION || "us-east-1" });
 
 // CRUD operations for notes
-router.use("note", Crud({ className: Note }));
+router.use("/note", Crud({ className: Note }));
 
 /**
  * POST /note/auto-tag
@@ -41,9 +41,19 @@ router.post("/note/auto-tag", async (req, res) => {
       new TextDecoder().decode(response.Payload)
     );
 
-    return res.status(response.StatusCode).json({
+    // Parse the body returned by Lambda (which is a JSON string)
+    const body = typeof payload.body === "string" ? JSON.parse(payload.body) : (payload.body || {});
+
+    if (payload.statusCode !== 200 || !body.success) {
+      return res.status(payload.statusCode || 500).json({
+        error: body.error || "Failed to generate tags",
+        message: body.message
+      });
+    }
+
+    return res.status(200).json({
       success: true,
-      data: payload
+      tags: body.tags || []
     });
   } catch (error) {
     console.error("Error invoking auto-tag Lambda:", error);
@@ -80,11 +90,15 @@ router.post("/note/with-tags", async (req, res) => {
       new TextDecoder().decode(tagResponse.Payload)
     );
 
+    // Parse the body returned by Lambda (which is a JSON string)
+    const tagBody = typeof tagPayload.body === "string" ? JSON.parse(tagPayload.body) : (tagPayload.body || {});
+    const tags = tagBody.tags || [];
+
     // Create note with generated tags
     const note = new Note({
       title,
       description,
-      tags: tagPayload.body?.tags || []
+      tags
     });
 
     await note.save();
@@ -92,7 +106,7 @@ router.post("/note/with-tags", async (req, res) => {
     res.status(201).json({
       success: true,
       note,
-      tags: tagPayload.body?.tags || []
+      tags
     });
   } catch (error) {
     console.error("Error creating note with tags:", error);
