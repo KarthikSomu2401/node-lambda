@@ -1,7 +1,11 @@
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
 import router from "./app/router/router.js";
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 

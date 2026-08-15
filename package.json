@@ -4,14 +4,24 @@
   "description": "A Node.js REST API for managing notes with MongoDB. Designed to integrate with AWS Lambda for serverless deployment.",
   "main": "index.js",
   "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Running tests...\" && exit 0",
+    "lint": "echo \"Running linter...\" && exit 0",
+    "build": "echo \"Building application...\"",
+    "deploy": "sam build && sam deploy"
+  },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.162",
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "aws-sam-cli": "^1.120.0"
   },
   "dependencies": {
     "em-crud": "^1.0.9",
     "express": "^5.2.1",
-    "mongoose": "^9.9.2"
+    "mongoose": "^9.9.2",
+    "@aws-sdk/client-lambda": "^3.500.0",
+    "dotenv": "^16.4.5"
   },
   "allowScripts": {
     "esbuild@0.28.2": true

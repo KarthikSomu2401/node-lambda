@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: 'Lambda Notes API - Serverless Node.js application with auto-tagging'
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: nodejs20.x
+    Environment:
+      Variables:
+        MONGODB_URI: !Ref MongoDBUri
+        AUTO_TAG_LAMBDA_FUNCTION: !Ref AutoTagFunction
+
+Parameters:
+  MongoDBUri:
+    Type: String
+    NoEcho: true
+    Description: MongoDB connection URI (use MongoDB Atlas)
+    Default: mongodb+srv://username:password@cluster.mongodb.net/note_db
+
+Resources:
+  # Main Express API Lambda Function
+  NotesApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: notes-api
+      CodeUri: .
+      Handler: lambda-handler.handler
+      Runtime: nodejs20.x
+      Timeout: 30
+      MemorySize: 512
+      Architectures:
+        - x86_64
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - lambda:InvokeFunction
+              Resource: !GetAtt AutoTagFunction.Arn
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref MongoDBUri
+          AUTO_TAG_LAMBDA_FUNCTION: !Ref AutoTagFunction
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+  # Auto-tagging Lambda Function
+  AutoTagFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: auto-tag-notes
+      CodeUri: app/lambda
+      Handler: auto-tag-function.handler
+      Runtime: nodejs20.x
+      Timeout: 15
+      MemorySize: 256
+      Architectures:
+        - x86_64
+
+  # HTTP API Gateway
+  ApiGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+      Auth:
+        DefaultAuthorizer: None
+
+Outputs:
+  NotesApiEndpoint:
+    Description: "API Gateway endpoint for Notes API"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+
+  NotesApiFunction:
+    Description: "Notes API Lambda Function ARN"
+    Value: !GetAtt NotesApiFunction.Arn
+
+  AutoTagFunction:
+    Description: "Auto-tag Notes Lambda Function ARN"
+    Value: !GetAtt AutoTagFunction.Arn

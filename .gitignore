@@ -31,9 +31,20 @@ yarn-error.log*
 dist/
 build/
 .esbuild-cache/
+.aws-sam/
 
 # Runtime data
 pids/
 *.pid
 *.seed
 *.pid.lock
+
+# GitHub Actions
+.github/workflows/*.tmp
+actions-artifact/
+
+# SAM CLI
+.aws-sam/
+sam-tests/
+samconfig.toml.local
+
